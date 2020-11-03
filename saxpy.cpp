@@ -21,5 +21,14 @@ int main() {
   std::cout << "Computing Saxpy on C++...\n";
   saxpy(x, y, 3.0F);
   std::cout << "Done!\n";
+
+  // Just to check the result, make a reduction on the y array(output)
+  float sum = 0;
+#pragma acc parallel loop reduction(+ : sum)
+  for (int i = 0; i < N; ++i) {
+    sum += y[i];
+  }
+
+  std::cout << "Final result = " << sum << std::endl;
   return 0;
 }

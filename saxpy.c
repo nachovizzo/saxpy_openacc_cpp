@@ -27,5 +27,13 @@ int main() {
   saxpy(N, 3.0F, x, y);
   printf("Done!\n");
 
+  // Just to check the result, make a reduction on the y array(output)
+  float sum = 0;
+#pragma acc parallel loop reduction(+ : sum)
+  for (int i = 0; i < N; ++i) {
+    sum += y[i];
+  }
+
+  printf("Final result = %F\n", sum);
   return 0;
 }
