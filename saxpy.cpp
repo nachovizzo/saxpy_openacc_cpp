@@ -14,7 +14,7 @@ void saxpy(const device_vector<float>& x, device_vector<float>& y, float a) {
 }
 
 int main() {
-  const int N = 1 << 25;
+  const int N = 1000000;
 
   const device_vector<float> x(N, 1.0F);
   device_vector<float> y(N, 2.0F);

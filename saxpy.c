@@ -13,7 +13,7 @@ void saxpy(int n, float a, const float *x, const float *y, float *restrict z) {
 }
 
 int main() {
-  const int N = 1 << 25;  // Huge number
+  const int N = 1000000;
 
   float *x = (float *)malloc(N * sizeof(float));
   float *y = (float *)malloc(N * sizeof(float));
@@ -37,6 +37,6 @@ int main() {
     sum += z[i];
   }
 
-  printf("Final result = %F\n", sum);
+  printf("Final result = %d\n", (int)sum);
   return 0;
 }
