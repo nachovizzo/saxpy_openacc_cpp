@@ -15,8 +15,8 @@ void saxpy(const device_vector<float>& x, device_vector<float>& y, float a) {
 
 int main() {
   const int N = 1 << 25;
-  const device_vector<float> x(N, 2.0F);
-  device_vector<float> y(N, 1.0F);
+  const device_vector<float> x(N, 1.0F);
+  device_vector<float> y(N, 2.0F);
 
   std::cout << "Computing Saxpy on C++...\n";
   saxpy(x, y, 3.0F);
@@ -25,7 +25,7 @@ int main() {
   // Just to check the result, make a reduction on the y array(output)
   float sum = 0;
 #pragma acc parallel loop reduction(+ : sum)
-  for (int i = 0; i < N; ++i) {
+  for (int i = 0; i < y.size(); ++i) {
     sum += y[i];
   }
 

@@ -19,8 +19,8 @@ int main() {
   float *y = (float *)malloc(N * sizeof(float));
 
   for (int i = 0; i < N; ++i) {
-    x[i] = 2.0F;
-    y[i] = 1.0F;
+    x[i] = 1.0F;
+    y[i] = 2.0F;
   }
 
   printf("Computing saxypy...\n");

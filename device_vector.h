@@ -15,7 +15,7 @@ public:
     _size = size;
     _A = new T[_size];
     #pragma acc enter data copyin(this)
-    #pragma acc enter data create(_A [0:_size])
+    #pragma acc enter data create(_A[0:_size])
   }
 
   explicit device_vector(size_t size, const T &value) {
@@ -25,11 +25,11 @@ public:
       _A[i] = value;
     }
     #pragma acc enter data copyin(this)
-    #pragma acc enter data create(_A [0:_size])
+    #pragma acc enter data create(_A[0:_size])
   }
 
   ~device_vector() {
-    #pragma acc exit data delete (_A [0:_size])
+    #pragma acc exit data delete (_A[0:_size])
     #pragma acc exit data delete (this)
     delete[] _A;
     _A = nullptr;
