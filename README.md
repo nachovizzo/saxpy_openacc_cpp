@@ -71,10 +71,67 @@ supports the word `class`, or because you don't believe in the "0 cost
 abstraction" principle we all `C++` programmers believe, then, it's fine. I'm
 sorry if I hurt your feelings.
 
-## ToDO
+## What is so exciting about pragma based directive parallelism?
 
- - [ ] Add `CUDA` example, probably one from scratch and one from CUBLAS.
- - [ ] Add `std::par` C++17 example
- - [ ] Add pybind11 bindings
- - [ ] Add Cython bindings
- - [ ] Add Jupyter Notebook to benchmark all examples
+Go and check out any modern high-performance library from the modern world,
+specially those who need to heavily use the GPU's always have 2 versions of
+the library functionality, one for CPU, one for GPU(Just check PyTorch,
+Open3D, etc). Of course, this is time consuming to mantain and therefore costly.
+What is worse is that the GPU based parallelism is usually written in CUDA
+which I think is an horrible extension to the C/C++ languages, plus, it's
+100% tightned to a private company, which, it is no good. On the other hand,
+the CPU implementation often rely on `OpenMP` directives... but not always,
+which make this CPU code highly un-efficient. Specially when comparing it
+against it's CUDA counterpart.
+
+What is so beautiful about open standards like `OpenMP` and `OpenACC` is that
+allows you to express parallel code in a much nicer way, and without forcing
+you to marry to any particular vendor. Nowadays, the only "good" compiler
+that fully supports `OpenACC` is the one from the NVIDIA-SDK. So, we are
+still on the same circle, but if we developers push for a better programming
+style, the support for great compilers like `gcc` and `clang` will come in no
+time. Nowadays everyone still use CUDA, so that's the problem (from my
+perspective).
+
+### Don't believe my words, look this
+
+So, the same piece of code, only 1 module to mantain. Let's take
+[saxpy.cpp](saxpy.cpp) as the victim here. You first write your code, and then
+express how you would like to run this in parallel with almost no intrusion to
+the original code. And then you can:
+
+#### Run the code with a GPU
+
+```sh
+cmake -DCMAKE_CXX_COMPILER=nvc++ -DCMAKE_C_COMPILER=nvc -DENABLE_OPENACC=ON ..
+make all
+ACC_DEVICE_TYPE=nvidia ./saxpy_cpp # Runs on your NVIDIA GPU
+```
+
+#### Run the code with a **multicore** CPU
+
+```sh
+cmake -DCMAKE_CXX_COMPILER=nvc++ -DCMAKE_C_COMPILER=nvc -DENABLE_OPENACC=ON ..
+make all
+ACC_DEVICE_TYPE=host ./saxpy_cpp # Runs on multicore, a la OpenMP
+```
+
+#### Run the code with a **singlecore** CPU
+
+```sh
+cmake -DCMAKE_CXX_COMPILER=nvc++ -DCMAKE_C_COMPILER=nvc -DENABLE_OPENACC=OFF ..
+make all
+./saxpy_cpp # Runs on singlecore, look at -DENABLE_OPENACC=OFF ..
+```
+
+#### Virtually with any kind of accelerator
+
+FPGA, DSP, AMD GPU etc, Though I've never tried this myself.
+
+## ToDo
+
+- [ ] Add `CUDA` example, probably one from scratch and one from CUBLAS.
+- [ ] Add `std::par` C++17 example
+- [ ] Add pybind11 bindings
+- [ ] Add Cython bindings
+- [ ] Add Jupyter Notebook to benchmark all examples
