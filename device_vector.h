@@ -6,16 +6,13 @@
 
 // clang-format off
 template <typename T> class device_vector {
-
 public:
-
   device_vector() = default;
 
   explicit device_vector(size_t size) {
     _size = size;
     _A = new T[_size];
-    #pragma acc enter data copyin(this)
-    #pragma acc enter data create(_A[0:_size])
+    #pragma acc enter data copyin(this) create(_A[0:_size])
   }
 
   explicit device_vector(size_t size, const T &value) {
@@ -24,24 +21,31 @@ public:
     for (int i = 0; i < _size; ++i) {
       _A[i] = value;
     }
-    #pragma acc enter data copyin(this)
-    #pragma acc enter data create(_A[0:_size])
+    #pragma acc enter data copyin(this, _A[0:_size])
   }
 
   ~device_vector() {
-    #pragma acc exit data delete (_A[0:_size])
-    #pragma acc exit data delete (this)
+    #pragma acc exit data delete (this, _A[0:_size])
     delete[] _A;
     _A = nullptr;
     _size = 0;
   }
 
-  #pragma acc routine seq
-  T &operator[](size_t idx) { return _A[idx]; }
+  void update_host() {
+    #pragma acc update self(_A[0:_size])
+  }
+
+  void update_device() {
+    #pragma acc update device(_A[0:_size])
+  }
 
   #pragma acc routine seq
-  const T &operator[](size_t idx) const { return _A[idx]; }
+  inline T &operator[](size_t idx) { return _A[idx]; }
 
+  #pragma acc routine seq
+  inline T &operator[](size_t idx) const { return _A[idx]; }
+
+  #pragma acc routine seq
   size_t size() const { return _size; }
 
 private:

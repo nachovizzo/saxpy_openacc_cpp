@@ -2,33 +2,34 @@
 // @author    Ignacio Vizzo     [ivizzo@uni-bonn.de]
 //
 // Copyright (c) 2020 Ignacio Vizzo, all rights reserved
+#include <cassert>
 #include <iostream>
 
 #include "device_vector.h"
 
-void saxpy(const device_vector<float>& x, device_vector<float>& y, float a) {
-#pragma acc parallel loop
+device_vector<float> saxpy(const device_vector<float>& x,
+                           const device_vector<float>& y,
+                           float a) {
+  assert(x.size() == y.size());
+  device_vector<float> z(x.size());
+  #pragma acc parallel loop
   for (int i = 0; i < y.size(); ++i) {
-    y[i] = a * x[i] + y[i];
+    z[i] = a * x[i] + y[i];
   }
+  return z;
 }
 
 int main() {
-  const int N = 1000000;
-
+  const int N = 1 << 20;
+  const float a = 1.0F;
   const device_vector<float> x(N, 1.0F);
-  device_vector<float> y(N, 2.0F);
-  const float a = 3.0F;
+  const device_vector<float> y(N, 1.0F);
 
-  std::cout << "Computing Saxpy on C++...\n";
-  saxpy(x, y, a);
-  std::cout << "Done!\n";
-
-  // Just to check the result, make a reduction on the y array(output)
+  auto z = saxpy(x, y, a);
   float sum = 0;
-#pragma acc parallel loop reduction(+ : sum)
-  for (int i = 0; i < y.size(); ++i) {
-    sum += y[i];
+  #pragma acc parallel loop reduction(+ : sum)
+  for (int i = 0; i < z.size(); ++i) {
+    sum += z[i];
   }
 
   std::cout << "Final result = " << sum << std::endl;
