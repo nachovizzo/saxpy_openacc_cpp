@@ -27,7 +27,7 @@ int main() {
 
   auto z = saxpy(x, y, a);
   float sum = 0;
-  #pragma acc parallel loop reduction(+ : sum)
+  #pragma acc parallel loop reduction(+:sum) copy(sum)
   for (int i = 0; i < z.size(); ++i) {
     sum += z[i];
   }

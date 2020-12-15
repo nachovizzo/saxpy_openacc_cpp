@@ -29,7 +29,7 @@ int main() {
   saxpy(N, a, x, y, z);
 
   float sum = 0;
-  #pragma acc parallel loop reduction(+:sum)
+  #pragma acc parallel loop reduction(+:sum) copy(sum)
   for (int i = 0; i < N; ++i) {
     sum += z[i];
   }
