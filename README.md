@@ -1,5 +1,18 @@
 # Saxpy C vs C++ Using OpenACC
 
+- [Saxpy C vs C++ Using OpenACC](#saxpy-c-vs-c-using-openacc)
+  - [Why C++](#why-c)
+  - [What do I need to build this project?](#what-do-i-need-to-build-this-project)
+  - [What if my compiler doesn't support OpenACC?](#what-if-my-compiler-doesnt-support-openacc)
+  - [Bbbbbbbut I was told `C` is faster than `C++`](#bbbbbbbut-i-was-told-c-is-faster-than-c)
+  - [What is so exciting about pragma based directive parallelism?](#what-is-so-exciting-about-pragma-based-directive-parallelism)
+    - [Don't believe my words, look this](#dont-believe-my-words-look-this)
+      - [Run the code with a GPU](#run-the-code-with-a-gpu)
+      - [Run the code with a **multicore** CPU](#run-the-code-with-a-multicore-cpu)
+      - [Run the code with a **singlecore** CPU](#run-the-code-with-a-singlecore-cpu)
+      - [Virtually with any kind of accelerator](#virtually-with-any-kind-of-accelerator)
+  - [ToDo](#todo)
+
 This is just a small example of how **I** think you should be using C++ over
 C even when working with HPC applications, using OpenACC. I strongly believe
 that one should do the things that would like the world to be doing, and for
