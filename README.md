@@ -70,3 +70,11 @@ it or you are still convinced that `C++` add "extra overhead" just because it
 supports the word `class`, or because you don't believe in the "0 cost
 abstraction" principle we all `C++` programmers believe, then, it's fine. I'm
 sorry if I hurt your feelings.
+
+## ToDO
+
+ - [ ] Add `CUDA` example, probably one from scratch and one from CUBLAS.
+ - [ ] Add `std::par` C++17 example
+ - [ ] Add pybind11 bindings
+ - [ ] Add Cython bindings
+ - [ ] Add Jupyter Notebook to benchmark all examples
