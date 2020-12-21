@@ -143,8 +143,10 @@ FPGA, DSP, AMD GPU etc, Though I've never tried this myself.
 
 ## ToDo
 
-- [ ] Add `CUDA` example, probably one from scratch and one from CUBLAS.
+- [ ] Add `CUDA` example.
+- [ ] Add `cuBLAS` example.
 - [ ] Add `std::par` C++17 example
+- [ ] Add `OpenMP 5.0` example.
 - [ ] Add pybind11 bindings
 - [ ] Add Cython bindings
 - [ ] Add Jupyter Notebook to benchmark all examples
