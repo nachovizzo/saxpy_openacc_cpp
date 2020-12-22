@@ -24,7 +24,6 @@ if(TARGET_CPU)
     set(TARGET_ACCEL "-ta=multicore")
     set(TARGET_STDPAR "-stdpar=multicore")
 elseif(TARGET_GPU)
-    set(TARGET_ACCEL "-gpu=cc75")
     set(TARGET_STDPAR "-stdpar=gpu")
 endif()
 
